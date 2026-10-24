@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, Copy, Mail, ArrowUpRight } from 'lucide-react';
-import {
-  CONTACT_SERVICE_OPTIONS,
-  PERSONAL_CONFIG,
-} from '../data/portfolioData';
+import { PERSONAL_CONFIG } from '../data/portfolioData';
+import { useLanguage } from '../context/LanguageContext';
+import { useGlobalMotion } from '../context/GlobalMotionContext';
+import { InteractiveButton } from './InteractiveButton';
 import {
   toggleService,
   validateContactForm,
@@ -24,6 +24,9 @@ export function Contact({
   setSelectedServices,
   projectNote,
 }: ContactProps) {
+  const { lang, t, isTransitioning } = useLanguage();
+  const { triggerEnergyPulse } = useGlobalMotion();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState(projectNote ?? '');
@@ -39,7 +42,6 @@ export function Contact({
   } | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // Sync message if user clicks "Discuss this system" on a project card
   const [lastSyncedNote, setLastSyncedNote] = useState<string | undefined>(
     projectNote
   );
@@ -50,18 +52,25 @@ export function Contact({
     }
   }
 
-  const handleToggleArea = (option: string) => {
-    setSelectedServices((prev) => toggleService(prev, option));
+  const handleToggleArea = (
+    optionId: string,
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    triggerEnergyPulse(e.clientX, e.clientY);
+    setSelectedServices((prev) => toggleService(prev, optionId));
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const validation = validateContactForm({
-      name,
-      email,
-      message,
-      selectedServices,
-    });
+    const validation = validateContactForm(
+      {
+        name,
+        email,
+        message,
+        selectedServices,
+      },
+      lang
+    );
 
     if (!validation.valid) {
       setErrors(validation.errors);
@@ -90,68 +99,80 @@ export function Contact({
     }
   };
 
+  const selectedAreaLabels = selectedServices.map((id) => {
+    const found = t.contact.serviceOptions.find((opt) => opt.id === id);
+    return found ? found.label : id;
+  });
+
   return (
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="w-full py-24 sm:py-32 bg-[#F4F5FA] border-t border-neutral-900/10"
+      className={`relative w-full py-24 sm:py-32 transition-opacity duration-200 ${
+        isTransitioning ? 'opacity-80' : 'opacity-100'
+      }`}
     >
-      <div className="w-full max-w-7xl mx-auto px-5 sm:px-8">
+      {/* Gradual Return Toward a Luminous Violet/Lavender Atmospheric Horizon */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#21103F]/55 via-[#150A2E]/35 to-transparent"
+      />
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Left Column: Editorial Prompt & Service Multi-Select */}
           <div className="lg:col-span-6">
             <motion.p
               {...getScrollRevealProps(0, 16)}
-              className="font-mono text-xs uppercase tracking-[0.18em] text-[#2D46B9] mb-4"
+              className="font-mono text-xs uppercase tracking-[0.18em] text-[#E8C879] mb-4"
             >
-              05 / Contact
+              {t.contact.eyebrow}
             </motion.p>
 
             <motion.h2
               id="contact-heading"
               {...getScrollRevealProps(0.06, 24)}
-              className="text-4xl sm:text-5xl lg:text-[54px] font-medium tracking-[-0.03em] text-neutral-950 leading-[1.08] mb-6"
+              className="font-display text-4xl sm:text-5xl lg:text-[54px] font-semibold tracking-[-0.03em] text-[#F4F0FF] leading-[1.1] mb-6"
             >
-              Have an idea worth building?
+              {t.contact.heading}
             </motion.h2>
 
             <motion.p
               {...getScrollRevealProps(0.12, 20)}
-              className="text-lg sm:text-xl text-neutral-600 leading-relaxed mb-12 max-w-xl"
+              className="text-lg sm:text-xl text-[#ACA1C7] leading-relaxed mb-12 max-w-xl"
             >
-              Whether it&apos;s an AI product, a development workflow, or an
-              experimental digital experience, I&apos;d be interested in hearing
-              about it.
+              {t.contact.supportingText}
             </motion.p>
 
             {/* Multi-Select Areas of Interest */}
             <motion.div {...getScrollRevealProps(0.18, 20)}>
-              <h3 className="text-lg font-medium tracking-tight text-neutral-950 mb-1.5">
-                Areas of interest
+              <h3 className="font-display text-lg font-medium tracking-tight text-[#F4F0FF] mb-1.5">
+                {t.contact.areasTitle}
               </h3>
-              <p className="text-sm text-neutral-500 mb-5">
-                Select all that apply
+              <p className="text-sm text-[#ACA1C7] mb-5">
+                {t.contact.areasSubtitle}
               </p>
 
               <div
                 role="group"
-                aria-label="Areas of interest"
+                aria-label={t.contact.areasTitle}
                 className="flex flex-wrap gap-3 mb-5"
               >
-                {CONTACT_SERVICE_OPTIONS.map((option) => {
-                  const isSelected = selectedServices.includes(option);
+                {t.contact.serviceOptions.map((option) => {
+                  const isSelected = selectedServices.includes(option.id);
                   return (
                     <motion.button
-                      key={option}
+                      key={option.id}
                       type="button"
                       aria-pressed={isSelected}
-                      onClick={() => handleToggleArea(option)}
-                      whileTap={{ scale: 0.97 }}
+                      onClick={(e) => handleToggleArea(option.id, e)}
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.96 }}
                       layout
-                      className={`px-5 py-3 rounded-full text-sm sm:text-[15px] font-medium transition-colors duration-200 flex items-center gap-2 cursor-pointer select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2D46B9] ${
+                      className={`px-5 py-3 rounded-full text-sm sm:text-[15px] font-medium transition-all duration-200 flex items-center gap-2 cursor-pointer select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E8C879] ${
                         isSelected
-                          ? 'bg-neutral-950 text-white shadow-sm border border-neutral-950'
-                          : 'bg-white text-neutral-900 border border-neutral-900/15 hover:border-neutral-900/40'
+                          ? 'bg-gradient-to-r from-[#854DFF] to-[#6332D9] text-[#F4F0FF] border border-[#E8C879]/80 shadow-[0_0_24px_rgba(133,77,255,0.45)]'
+                          : 'bg-[#150B2E]/85 text-[#ACA1C7] border border-[#BC9AFF]/25 hover:border-[#BC9AFF]/60 hover:text-[#F4F0FF]'
                       }`}
                     >
                       <AnimatePresence initial={false}>
@@ -166,21 +187,21 @@ export function Contact({
                               stiffness: 300,
                               damping: 20,
                             }}
-                            className="inline-flex items-center justify-center overflow-hidden"
+                            className="inline-flex items-center justify-center overflow-hidden text-[#E8C879]"
                           >
                             <Check className="w-4 h-4 stroke-[2.5]" />
                           </motion.span>
                         )}
                       </AnimatePresence>
-                      <span>{option}</span>
+                      <span>{option.label}</span>
                     </motion.button>
                   );
                 })}
               </div>
 
               {/* Status Feedback Line */}
-              <p className="font-mono text-xs text-neutral-600 min-h-[24px]">
-                {formatInquiryBanner(selectedServices)}
+              <p className="font-mono text-xs text-[#BC9AFF] min-h-[24px]">
+                {formatInquiryBanner(selectedServices, lang)}
               </p>
             </motion.div>
           </div>
@@ -193,15 +214,15 @@ export function Contact({
             <form
               onSubmit={handleSubmit}
               noValidate
-              className="bg-white rounded-2xl border border-neutral-900/10 p-6 sm:p-10 space-y-6"
+              className="bg-[#120A2A]/90 rounded-2xl border border-[#BC9AFF]/25 p-6 sm:p-10 space-y-6 shadow-[0_24px_64px_rgba(11,7,28,0.8)]"
             >
               {/* Name Field */}
               <div>
                 <label
                   htmlFor="contact-name"
-                  className="block font-mono text-xs uppercase tracking-wider text-neutral-700 mb-2"
+                  className="block font-mono text-xs uppercase tracking-wider text-[#BC9AFF] mb-2"
                 >
-                  Name
+                  {t.contact.form.nameLabel}
                 </label>
                 <input
                   id="contact-name"
@@ -211,18 +232,22 @@ export function Contact({
                   value={name}
                   onChange={(e) => {
                     setName(e.target.value);
-                    if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
+                    if (errors.name) {
+                      setErrors((prev) => ({ ...prev, name: undefined }));
+                    }
                   }}
                   aria-invalid={Boolean(errors.name)}
-                  aria-describedby={errors.name ? 'contact-name-error' : undefined}
-                  placeholder="Your name"
-                  className="w-full px-4 py-3.5 rounded-xl border border-neutral-900/15 bg-[#FAFAFC] text-base text-neutral-950 placeholder:text-neutral-400 focus:outline-none focus:border-[#2D46B9] transition-colors"
+                  aria-describedby={
+                    errors.name ? 'contact-name-error' : undefined
+                  }
+                  placeholder={t.contact.form.namePlaceholder}
+                  className="w-full px-4 py-3.5 rounded-xl border border-[#BC9AFF]/25 bg-[#0B071C]/85 text-base text-[#F4F0FF] placeholder:text-[#ACA1C7]/45 focus:outline-none focus:border-[#E8C879] transition-colors"
                 />
                 {errors.name && (
                   <p
                     id="contact-name-error"
                     role="alert"
-                    className="mt-1.5 text-xs text-red-600 font-medium"
+                    className="mt-1.5 text-xs text-[#FF8A8A] font-medium"
                   >
                     {errors.name}
                   </p>
@@ -233,9 +258,9 @@ export function Contact({
               <div>
                 <label
                   htmlFor="contact-email"
-                  className="block font-mono text-xs uppercase tracking-wider text-neutral-700 mb-2"
+                  className="block font-mono text-xs uppercase tracking-wider text-[#BC9AFF] mb-2"
                 >
-                  Email
+                  {t.contact.form.emailLabel}
                 </label>
                 <input
                   id="contact-email"
@@ -245,18 +270,22 @@ export function Contact({
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
-                    if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+                    if (errors.email) {
+                      setErrors((prev) => ({ ...prev, email: undefined }));
+                    }
                   }}
                   aria-invalid={Boolean(errors.email)}
-                  aria-describedby={errors.email ? 'contact-email-error' : undefined}
-                  placeholder="you@example.com"
-                  className="w-full px-4 py-3.5 rounded-xl border border-neutral-900/15 bg-[#FAFAFC] text-base text-neutral-950 placeholder:text-neutral-400 focus:outline-none focus:border-[#2D46B9] transition-colors"
+                  aria-describedby={
+                    errors.email ? 'contact-email-error' : undefined
+                  }
+                  placeholder={t.contact.form.emailPlaceholder}
+                  className="w-full px-4 py-3.5 rounded-xl border border-[#BC9AFF]/25 bg-[#0B071C]/85 text-base text-[#F4F0FF] placeholder:text-[#ACA1C7]/45 focus:outline-none focus:border-[#E8C879] transition-colors"
                 />
                 {errors.email && (
                   <p
                     id="contact-email-error"
                     role="alert"
-                    className="mt-1.5 text-xs text-red-600 font-medium"
+                    className="mt-1.5 text-xs text-[#FF8A8A] font-medium"
                   >
                     {errors.email}
                   </p>
@@ -267,9 +296,9 @@ export function Contact({
               <div>
                 <label
                   htmlFor="contact-selected-areas"
-                  className="block font-mono text-xs uppercase tracking-wider text-neutral-700 mb-2"
+                  className="block font-mono text-xs uppercase tracking-wider text-[#BC9AFF] mb-2"
                 >
-                  Selected areas of interest
+                  {t.contact.form.selectedAreasLabel}
                 </label>
                 <input
                   id="contact-selected-areas"
@@ -277,11 +306,11 @@ export function Contact({
                   type="text"
                   readOnly
                   value={
-                    selectedServices.length > 0
-                      ? selectedServices.join(', ')
-                      : 'None selected (General Inquiry)'
+                    selectedAreaLabels.length > 0
+                      ? selectedAreaLabels.join(lang === 'zh-CN' ? '、' : ', ')
+                      : t.contact.form.noneSelectedValue
                   }
-                  className="w-full px-4 py-3 rounded-xl border border-neutral-900/10 bg-neutral-100/80 text-sm text-neutral-700 focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-[#BC9AFF]/15 bg-[#21103F]/50 text-sm text-[#E8C879] focus:outline-none"
                 />
               </div>
 
@@ -289,9 +318,9 @@ export function Contact({
               <div>
                 <label
                   htmlFor="contact-message"
-                  className="block font-mono text-xs uppercase tracking-wider text-neutral-700 mb-2"
+                  className="block font-mono text-xs uppercase tracking-wider text-[#BC9AFF] mb-2"
                 >
-                  Project or message
+                  {t.contact.form.messageLabel}
                 </label>
                 <textarea
                   id="contact-message"
@@ -308,14 +337,14 @@ export function Contact({
                   aria-describedby={
                     errors.message ? 'contact-message-error' : undefined
                   }
-                  placeholder="Tell me about the problem, timeline, or idea you're exploring..."
-                  className="w-full px-4 py-3.5 rounded-xl border border-neutral-900/15 bg-[#FAFAFC] text-base text-neutral-950 placeholder:text-neutral-400 focus:outline-none focus:border-[#2D46B9] transition-colors resize-y"
+                  placeholder={t.contact.form.messagePlaceholder}
+                  className="w-full px-4 py-3.5 rounded-xl border border-[#BC9AFF]/25 bg-[#0B071C]/85 text-base text-[#F4F0FF] placeholder:text-[#ACA1C7]/45 focus:outline-none focus:border-[#E8C879] transition-colors resize-y"
                 />
                 {errors.message && (
                   <p
                     id="contact-message-error"
                     role="alert"
-                    className="mt-1.5 text-xs text-red-600 font-medium"
+                    className="mt-1.5 text-xs text-[#FF8A8A] font-medium"
                   >
                     {errors.message}
                   </p>
@@ -324,13 +353,17 @@ export function Contact({
 
               {/* Submit Button */}
               <div className="pt-2">
-                <button
+                <InteractiveButton
                   type="submit"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-neutral-950 text-white text-sm sm:text-[15px] font-medium hover:bg-[#2D46B9] transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2D46B9]"
+                  variant="primary"
+                  className="w-full sm:w-auto"
                 >
-                  <span>Let&apos;s Connect</span>
-                  <ArrowUpRight aria-hidden="true" className="w-4 h-4 stroke-[2]" />
-                </button>
+                  <span>{t.contact.form.submitButton}</span>
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="w-4 h-4 stroke-[2] text-[#E8C879]"
+                  />
+                </InteractiveButton>
               </div>
 
               {/* Honest Email-Based Fallback Panel */}
@@ -345,15 +378,15 @@ export function Contact({
                     <div
                       role="status"
                       aria-live="polite"
-                      className="mt-4 p-5 rounded-xl bg-[#F4F6FD] border border-[#2D46B9]/25 space-y-4"
+                      className="mt-4 p-5 rounded-xl bg-[#21103F]/90 border border-[#E8C879]/45 space-y-4"
                     >
                       <div>
-                        <p className="text-sm font-medium text-neutral-950 mb-1">
-                          Direct Email Handoff Ready
+                        <p className="text-sm font-medium text-[#E8C879] mb-1">
+                          {t.contact.form.fallback.title}
                         </p>
-                        <p className="text-xs text-neutral-600 leading-relaxed">
-                          No backend mail server is configured on this static deployment. Your inquiry has been formatted for direct email delivery to{' '}
-                          <span className="font-mono text-neutral-900">
+                        <p className="text-xs text-[#ACA1C7] leading-relaxed">
+                          {t.contact.form.fallback.descriptionPrefix}
+                          <span className="font-mono text-[#F4F0FF]">
                             {PERSONAL_CONFIG.email}
                           </span>
                           .
@@ -363,21 +396,26 @@ export function Contact({
                       <div className="flex flex-wrap items-center gap-3">
                         <a
                           href={preparedPayload.mailtoUrl}
-                          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#2D46B9] text-white text-xs font-medium hover:bg-neutral-950 transition-colors"
+                          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#854DFF] text-[#F4F0FF] text-xs font-medium hover:bg-[#6E36EB] transition-colors"
                         >
                           <Mail className="w-3.5 h-3.5" />
-                          <span>Open in Email Client</span>
-                          <ArrowUpRight aria-hidden="true" className="w-3.5 h-3.5" />
+                          <span>{t.contact.form.fallback.openEmailButton}</span>
+                          <ArrowUpRight
+                            aria-hidden="true"
+                            className="w-3.5 h-3.5 text-[#E8C879]"
+                          />
                         </a>
 
                         <button
                           type="button"
                           onClick={handleCopyInquiry}
-                          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white border border-neutral-900/15 text-neutral-900 text-xs font-medium hover:border-neutral-900/40 transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#0B071C]/90 border border-[#BC9AFF]/35 text-[#F4F0FF] text-xs font-medium hover:border-[#E8C879] transition-colors cursor-pointer"
                         >
-                          <Copy className="w-3.5 h-3.5" />
+                          <Copy className="w-3.5 h-3.5 text-[#E8C879]" />
                           <span>
-                            {copied ? 'Copied to Clipboard' : 'Copy Formatted Message'}
+                            {copied
+                              ? t.contact.form.fallback.copiedButton
+                              : t.contact.form.fallback.copyButton}
                           </span>
                         </button>
                       </div>

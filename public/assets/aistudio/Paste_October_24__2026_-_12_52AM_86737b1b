@@ -1,0 +1,1022 @@
+# PHASE 3 — YU CHENGZI COSMIC INTERACTIVE PORTFOLIO
+
+## ROLE
+
+Act as a Principal Creative Developer, Award-Level Digital Art Director, Senior React/Three.js Engineer, Motion Designer, and Frontend Performance Architect.
+
+You are working on an EXISTING personal portfolio website.
+
+This is an implementation task, not a conceptual design proposal.
+
+Your objective is to transform the existing website into a premium, immersive, bilingual, galaxy-inspired interactive personal portfolio.
+
+The experience should combine:
+
+- Cosmic visual storytelling
+- Real-time 3D spatial depth
+- A breathing digital human
+- Interactive particle systems
+- Coordinated motion design
+- Chinese/English localization
+- Experimental editorial typography
+- Smooth continuous scrolling
+- Sophisticated responsive interactions
+
+The result must feel like a complete, original, art-directed digital experience rather than a collection of unrelated animation demos.
+
+---
+
+# 01. EXISTING PROJECT — PRESERVE AND EXTEND
+
+Repository reference:
+
+https://github.com/YUCZ-43/YUCZ73
+
+The repository may be inaccessible. If so, inspect the files in the current working environment and continue from the existing project. Do not invent repository contents.
+
+Before modifying anything:
+
+1. Inspect package.json and identify the framework and dependency versions.
+2. Locate the current hero, navigation, project showcase, expertise, about, contact, and footer components.
+3. Locate the existing 3D human asset and determine whether it is a PNG, video, GLB/GLTF model, or another rendering method.
+4. Inspect existing mouse-tracking and animation implementations.
+5. Identify the current root layout, overflow settings, section backgrounds, and scroll behavior.
+6. Inspect existing assets, typography, responsive layouts, and CSS design tokens.
+
+Preserve working content, interactions, navigation, project data, and assets.
+
+Do not rebuild the entire application unnecessarily.
+
+Do not replace the existing digital human with another generic 3D model.
+
+Do not overwrite unrelated files or remove working features.
+
+Create a safe checkpoint before extensive changes.
+
+---
+
+# 02. BRAND IDENTITY
+
+Replace all instances of the placeholder personal brand "Your Name" with:
+
+Chinese:
+
+魚橙子
+
+English:
+
+YU CHENGZI
+
+The exact Chinese characters must be preserved.
+
+Do not replace 魚 with 鱼.
+
+Treat "YU CHENGZI" as the initial English romanized brand name, not a literal translation.
+
+## Brand Display
+
+Desktop navigation:
+
+魚橙子
+YU CHENGZI
+
+Use a refined two-line or integrated bilingual wordmark.
+
+The Chinese name should have stronger visual weight.
+
+The English name should serve as a subtle editorial signature.
+
+On mobile, use a compact layout without reducing the legibility of the Chinese brand.
+
+Create consistent favicon, page title, and metadata using the brand where practical.
+
+Do not invent a portrait, biography, professional qualification, or personal contact address.
+
+All personal profile content must remain editable.
+
+---
+
+# 03. CORE VISUAL DIRECTION
+
+Creative direction:
+
+COSMIC PURPLE × CELESTIAL DEPTH × DIGITAL HUMAN × EDITORIAL EXPERIMENTALISM
+
+The website should feel like an intelligent digital universe.
+
+Take inspiration from cinematic galaxy imagery and experimental editorial websites with:
+
+- Monumental typography.
+- A central sculptural subject.
+- Foreground/background layering.
+- Dramatic depth.
+- Material reflections.
+- Atmospheric lighting.
+- Text partially concealed behind visual subjects.
+- Confident negative space.
+
+Do not directly copy another website's artwork, layout, or visual assets.
+
+## Color Palette
+
+Primary background:
+
+Deep Cosmic Violet — #0B071C
+
+Secondary background:
+
+Nebula Purple — #21103F
+
+Primary accent:
+
+Electric Violet — #854DFF
+
+Secondary accent:
+
+Soft Lavender — #BC9AFF
+
+Complementary accent:
+
+Champagne Gold — #E8C879
+
+Atmospheric accent:
+
+Spectral Cyan — #6AD9FF
+
+Primary text on dark backgrounds:
+
+Moonlight White — #F4F0FF
+
+Soft text:
+
+Muted Lavender — #ACA1C7
+
+These are starting design tokens. Refine them for accessibility and artistic consistency.
+
+Purple must remain dominant.
+
+Use gold as a carefully controlled complementary accent for selected interactions, particle highlights, and visual emphasis.
+
+Avoid oversaturating the entire interface.
+
+---
+
+# 04. IMPORTANT — REMOVE VISUAL HARD CUTS
+
+The current website has a visibly abrupt visual transition beneath the 3D digital human.
+
+There is also excessive empty space near the bottom of the hero.
+
+Correct this issue.
+
+Do NOT divide the website into isolated sections with suddenly changing solid background colors.
+
+Instead, create a continuous atmospheric environment that evolves naturally as the visitor scrolls.
+
+## Required Transition Behavior
+
+The initial hero can retain a soft lavender-white atmospheric appearance inspired by the current design.
+
+As the user scrolls:
+
+- The ambient environment gradually deepens toward cosmic purple.
+- Galaxy elements become more visible.
+- Small particles emerge from the background.
+- The digital human's glow transitions into the galaxy atmosphere.
+- Section backgrounds blend smoothly without visible seams.
+- Project content appears within the same visual universe.
+- Later sections continue the cosmic identity without restarting the visual scene.
+
+Use controlled overlapping gradients, transparency, depth layering, and scroll-linked color interpolation.
+
+Avoid large empty gaps or noticeable horizontal color boundaries.
+
+Preserve sufficient contrast for all text.
+
+---
+
+# 05. REAL-TIME 3D GALAXY BACKGROUND
+
+Create an immersive, interactive, real-time cosmic environment.
+
+Artistic inspiration:
+
+An Andromeda-inspired spiral galaxy, reimagined through deep violet, lavender, cyan, and champagne-gold light.
+
+This is an artistic cosmic interpretation, not a scientifically accurate galaxy simulation.
+
+## Desired Visual Features
+
+- A luminous galactic core.
+- Curved spiral arms.
+- Multiple depth layers of stars.
+- Atmospheric cosmic dust.
+- Faint nebula-like illumination.
+- Small drifting particles.
+- Sparse bright star clusters.
+- Cinematic perspective.
+- Very subtle orbital motion.
+- A clear illusion of depth extending behind the webpage.
+
+The scene must not look like a flat background image with a rotating CSS animation.
+
+Use actual 3D coordinates and perspective projection where feasible.
+
+## Rendering Architecture
+
+Prefer the existing rendering stack.
+
+If the project uses React and does not already have 3D infrastructure, evaluate:
+
+- Three.js
+- React Three Fiber
+- Drei, if useful
+- Efficient BufferGeometry particle systems
+- Shader-based particles where beneficial
+
+Avoid adding an experimental framework version or unnecessarily heavy dependencies.
+
+If the existing application is not React-based, adapt the implementation to its actual architecture.
+
+## Galaxy Interaction
+
+On mouse movement:
+
+- Near particles respond more strongly than distant particles.
+- The camera shifts slightly using damped interpolation.
+- The galaxy exhibits restrained perspective parallax.
+- Nearby stars gently drift away from or orbit around the cursor.
+- The central galaxy remains visually stable.
+
+On mouse click:
+
+- Generate a short-lived radial energy disturbance.
+- Nearby particles gently expand and return to their orbital behavior.
+- Add a faint violet/gold pulse.
+- Avoid explosions, flashes, or excessive visual noise.
+
+On scrolling:
+
+- Camera depth and galaxy rotation respond gradually.
+- The apparent distance between foreground and background changes.
+- Galaxy lighting evolves with page progression.
+- The camera must not rotate excessively or induce motion sickness.
+
+Create a visually convincing glasses-free depth illusion using perspective, motion parallax, occlusion, and lighting.
+
+Do not claim to implement hardware stereoscopic 3D.
+
+## Performance
+
+Use one reusable galaxy scene wherever practical.
+
+Avoid creating separate expensive WebGL scenes for every section.
+
+Use instancing, point buffers, and GPU-efficient effects where appropriate.
+
+Clamp device pixel ratio based on device capability.
+
+Pause unnecessary rendering work when the page is hidden.
+
+Release GPU resources and event listeners properly.
+
+Handle WebGL initialization failure and context loss.
+
+Provide a graceful static or lightweight animated fallback if WebGL is unavailable.
+
+---
+
+# 06. DIGITAL HUMAN — BREATHING AND LIVING PRESENCE
+
+The existing digital human is the primary brand centerpiece.
+
+Keep its identity, silhouette, image quality, and mouse interaction.
+
+Add a restrained sense of life.
+
+## Idle Animation
+
+The digital human should appear to breathe.
+
+Introduce:
+
+- Extremely subtle vertical floating.
+- Slow rhythmic expansion and contraction.
+- Soft pulsation of reflected light.
+- Gentle rim-light variation.
+- Minimal head orientation movement when supported.
+- Small variations in atmospheric particles near the subject.
+
+Suggested initial breathing cycle:
+
+Approximately 6–8 seconds.
+
+Suggested movement range:
+
+Very small, subject to visual testing.
+
+The subject must feel alive, not rubbery or mechanically bobbing.
+
+## Mouse Tracking
+
+Retain the current mouse-following functionality.
+
+Improve smoothness using damped or spring-based interpolation.
+
+The digital human and galaxy should feel connected.
+
+For example:
+
+When the cursor moves right:
+
+- The human subtly reacts toward the pointer.
+- Foreground particles respond with a small delay.
+- Background stars exhibit weaker parallax.
+- Highlight intensity shifts slightly.
+
+This creates one coherent spatial interaction rather than several disconnected mouse effects.
+
+## Important Technical Constraint
+
+If the current digital human is a flat PNG:
+
+Do not pretend that it has true skeletal animation.
+
+Use subtle CSS transforms, layer composition, glow modulation, displacement effects, or carefully implemented shader effects without excessive distortion.
+
+Do not warp the face or anatomy.
+
+If the asset is a genuine rigged 3D model, consider restrained procedural skeletal motion.
+
+Prioritize visual quality over the number of implemented effects.
+
+---
+
+# 07. GLOBAL MOTION SYSTEM
+
+Create a shared interaction and animation system.
+
+All major website effects should respond to a coherent collection of shared signals:
+
+1. Normalized pointer position.
+2. Page scroll progress.
+3. Current active section.
+4. Interaction intensity.
+5. Reduced-motion preference.
+6. Device performance tier.
+
+Do not attach completely separate animation loops to every component.
+
+## Shared Visual Rhythm
+
+The website should have a continuous ambient pulse.
+
+A subtle rhythm can influence:
+
+- Galaxy luminosity.
+- Human rim lighting.
+- Selected particle brightness.
+- Decorative line intensity.
+- CTA glow.
+- Active navigation indicators.
+
+The effects must share a visual cadence without making the entire page visibly bounce.
+
+Avoid synchronized oscillation of all text and layout elements.
+
+## Suggested Implementation
+
+Create a centralized interaction controller or motion provider appropriate for the existing framework.
+
+Use requestAnimationFrame responsibly.
+
+Use motion values, refs, shaders, or imperative animation updates for high-frequency motion instead of React state updates every frame.
+
+Separate:
+
+- Ambient motion
+- Pointer interactions
+- Scroll-linked effects
+- One-shot button responses
+- Accessibility fallbacks
+
+---
+
+# 08. CHINESE / ENGLISH LANGUAGE SWITCHING
+
+Implement complete bilingual support.
+
+Languages:
+
+简体中文 content (zh-CN)
+English content (en)
+
+Brand name:
+
+魚橙子 / YU CHENGZI
+
+Note that the brand intentionally uses the traditional character 魚 even when the surrounding interface is Simplified Chinese.
+
+## Navigation Placement
+
+Place the language switcher in the conventional upper-right header area.
+
+Recommended desktop arrangement:
+
+Work | Expertise | About | Contact | 中 / EN | Let's Talk ↗
+
+Adapt navigation labels for the active language.
+
+On mobile, include the language switcher within the accessible mobile navigation header or menu.
+
+The language switch should be:
+
+- Compact.
+- Elegant.
+- Clearly interactive.
+- Consistent with the purple/gold visual system.
+- Unambiguous about which language is active.
+
+## Interaction
+
+When clicked:
+
+- Switch all supported page copy.
+- Animate the change subtly using a short fade transition.
+- Preserve scroll position.
+- Do not reload the entire website unnecessarily.
+- Update document.documentElement.lang.
+- Persist the selected language in localStorage.
+
+Default to Chinese for first-time visitors unless an existing project preference has already been established.
+
+A manually selected language always takes priority over automatic detection.
+
+## Translation Coverage
+
+Localize:
+
+- Navigation
+- Hero heading
+- Hero description
+- Buttons
+- Selected Work
+- Project descriptions
+- Expertise
+- About
+- Contact
+- Form labels
+- Form validation messages
+- Footer
+- Accessibility labels
+- Page metadata where supported
+
+Do not translate technical names, official project names, or proper nouns incorrectly.
+
+Create a centralized translation dictionary or reuse the existing localization system.
+
+Do not hardcode conditional translations throughout unrelated JSX components.
+
+## Suggested Hero Copy
+
+Chinese:
+
+构建智能产品，
+探索数字世界的下一种可能。
+
+Supporting text:
+
+以人工智能、产品设计与工程技术为基础，将复杂构想转化为真正可用的数字体验。
+
+English:
+
+Designing intelligent products.
+Exploring what comes next.
+
+Supporting text:
+
+Exploring artificial intelligence, product design, and engineering to transform complex ideas into meaningful digital experiences.
+
+Chinese CTA:
+
+探索作品 ↓
+
+English CTA:
+
+Explore My Work ↓
+
+---
+
+# 09. EXPERIMENTAL EDITORIAL TYPOGRAPHY
+
+The current typography is too uniform.
+
+Introduce a sophisticated editorial typography system.
+
+Do not simply assign random fonts to different sections.
+
+Use controlled contrast between typographic roles.
+
+## Font Direction
+
+Latin display:
+
+A strong contemporary display sans-serif, such as Space Grotesk, or an existing suitable font.
+
+Chinese headline:
+
+A refined Chinese display font with strong character shapes and appropriate CJK coverage.
+
+Body:
+
+A highly readable sans-serif.
+
+Optional artistic accent:
+
+A restrained serif or italic display treatment for occasional English words.
+
+Keep the total number of font families limited.
+
+Use font subsets, appropriate fallbacks, and sensible loading behavior.
+
+## Hero Typography
+
+Create a visually expressive headline.
+
+Potential techniques:
+
+- Oversized type.
+- Animated letter spacing.
+- Staggered character entry.
+- Selected highlighted phrases.
+- Gradient text with subtle spectral movement.
+- A masked foreground/background composition.
+- Selected typography partially positioned behind the digital human.
+
+The human should occasionally overlap visual typography to strengthen the 3D effect.
+
+Do not let decorative typography obstruct primary readable content.
+
+## Interactive Headline
+
+On initial load:
+
+- Headline appears through a carefully staggered reveal.
+- Selected words settle into position.
+- A subtle highlight moves across a key phrase.
+
+On pointer movement:
+
+- Very subtle typographic displacement or highlight response.
+- No major shaking or rapid distortion.
+
+On scrolling:
+
+- Headline moves on a slightly different depth plane from the digital human.
+- Typography gently dissolves into the next atmospheric composition.
+
+Ensure real text remains available to assistive technologies.
+
+Avoid duplicated spoken text caused by decorative character splitting.
+
+---
+
+# 10. BUTTONS — SPRING, FLOAT AND ENERGY RESPONSE
+
+Redesign the interactive buttons.
+
+Visual style:
+
+- Precise geometry.
+- Refined rounded corners.
+- Purple translucent or glass-like surfaces where appropriate.
+- Controlled gold reflections.
+- Fine borders.
+- Soft volumetric shadows.
+
+## Hover
+
+When hovered:
+
+- Button gently lifts upward.
+- Border glow increases.
+- Directional arrow shifts.
+- Nearby decorative particles react very subtly.
+- The button transitions using spring-like easing.
+
+## Click / Tap
+
+When pressed:
+
+- Button compresses slightly.
+- A brief radial glow or contained ripple appears.
+- The button rebounds smoothly.
+- The intended navigation or action executes normally.
+
+The animation must not delay, replace, or interfere with the action.
+
+Suggested interaction:
+
+Resting → Hover Lift → Press Compression → Spring Recovery
+
+## Accessibility
+
+- Preserve visible keyboard focus.
+- Support Enter and Space.
+- Keep button states distinguishable without relying only on motion.
+- Avoid hover-only critical interactions.
+- Make all buttons usable on touch devices.
+
+---
+
+# 11. CONTINUOUS SCROLL STORYTELLING
+
+Preserve the existing site sections:
+
+Hero
+Selected Work
+Expertise
+About
+Contact
+Footer
+
+Do not remove their functional content.
+
+Redesign the movement between sections.
+
+## Hero to Work
+
+The human gradually recedes or dissolves into cosmic atmosphere.
+
+The galaxy grows more visible.
+
+Large project typography emerges through the same spatial environment.
+
+Avoid any abrupt white-to-black cut.
+
+## Work Section
+
+Project artwork should feel embedded in the atmosphere.
+
+Use:
+
+- Layered project previews.
+- Edge-to-edge visual compositions where suitable.
+- Atmospheric transitions.
+- Subtle perspective tilts.
+- Controlled hover scaling.
+- Soft environmental shadows.
+- Carefully integrated project labels.
+
+Avoid generic repeated cards with identical backgrounds.
+
+Do not use a single heavy color block behind each section.
+
+Give each project a slightly different visual identity while maintaining the overall purple cosmic design system.
+
+## Expertise
+
+Present capabilities using large interactive typography, thin separators, and elegant motion.
+
+Avoid traditional progress bars or invented skill percentages.
+
+## About
+
+Use expressive typography and subtle cosmic lighting.
+
+Consider one large editorial statement with supporting copy.
+
+Allow particles to move behind the text without degrading legibility.
+
+## Contact
+
+Create a visually memorable ending.
+
+Consider a gradual return toward a brighter violet or lavender atmospheric horizon.
+
+Use a large final CTA.
+
+Make the contact form and all social links functional or honestly labeled as not yet configured.
+
+---
+
+# 12. PARTICLE INTERACTION DETAILS
+
+Create a coherent particle system with three visual layers:
+
+## Layer A — Distant Star Field
+
+Very small distant stars.
+
+Minimal movement.
+
+Low intensity.
+
+Their purpose is atmosphere and depth.
+
+## Layer B — Galaxy Particle Structure
+
+Organized within the spiral galaxy.
+
+Slow orbital or rotational movement.
+
+Responds gently to scroll and camera parallax.
+
+## Layer C — Interactive Foreground Particles
+
+Sparse, larger particles.
+
+React to pointer proximity.
+
+Subtle attraction or repulsion.
+
+Respond to button interactions without obstructing clicks.
+
+The foreground layer should not dominate the visual composition.
+
+## Technical Requirements
+
+- Avoid excessive DOM particle elements.
+- Prefer GPU-friendly point rendering.
+- Keep particle brightness controlled.
+- Minimize overdraw and expensive post-processing.
+- Use pointer-events: none on purely decorative overlays.
+- Adapt particle density on lower-powered devices.
+- Do not create excessive scroll or pointer event subscriptions.
+
+---
+
+# 13. RESPONSIVE DESIGN
+
+Test at:
+
+1920px
+1440px
+1024px
+768px
+390px
+375px
+
+## Desktop
+
+Use the richest version of the visual scene.
+
+Maintain proper hierarchy:
+
+Brand → Introduction → Digital Human → Projects → Expertise → Contact.
+
+## Tablet
+
+Reduce camera movement and scene complexity where appropriate.
+
+Preserve readable typography and clear navigation.
+
+## Mobile
+
+Do not attempt to reproduce every desktop effect at full intensity.
+
+Requirements:
+
+- Reduced particle count or simplified shader complexity.
+- Smaller render resolution.
+- Reduced parallax.
+- Optimized digital-human placement.
+- No horizontal scrolling.
+- No content covered by decorative effects.
+- Accessible language switching.
+- Functional touch interactions.
+- Comfortable text line lengths.
+
+The site should still feel premium when animations are simplified.
+
+---
+
+# 14. PERFORMANCE AND ACCESSIBILITY
+
+Target fluid animation on capable desktop devices and gracefully reduced effects on mobile hardware.
+
+Suggested performance goals:
+
+- Approximately 60 FPS during normal desktop interactions on a capable system.
+- Prefer smooth 30–60 FPS mobile behavior over expensive visual detail.
+- Avoid persistent long tasks.
+- No unnecessary React render cycles during pointer movement.
+- No large layout shifts.
+- No visible animation-related scroll lag.
+
+Respect prefers-reduced-motion.
+
+For reduced motion:
+
+- Disable automatic camera travel.
+- Disable large parallax effects.
+- Stop continuous dramatic movement.
+- Show a stable cosmic composition.
+- Retain functional navigation and visual clarity.
+
+Also provide an optional low-motion or reduced-effects mode if it can be integrated without excessive complexity.
+
+Load nonessential effects progressively.
+
+Do not let the entire site fail if the WebGL scene cannot load.
+
+Keep the core portfolio HTML and navigation independently functional.
+
+---
+
+# 15. SUGGESTED COMPONENT ARCHITECTURE
+
+Adapt to the existing framework rather than forcing these exact files.
+
+Potential components:
+
+CosmicScene
+GalaxyParticles
+CosmicLighting
+DigitalHuman
+HumanMotionController
+GlobalMotionProvider
+LanguageSwitcher
+AnimatedHeadline
+InteractiveButton
+ScrollAtmosphere
+ProjectShowcase
+Navigation
+ContactSection
+
+Potential supporting modules:
+
+translations
+designTokens
+motionConfig
+performanceConfig
+portfolioData
+
+Avoid architecture overengineering.
+
+Prefer a small number of well-structured reusable components.
+
+---
+
+# 16. QUALITY CONTROL AND TESTING
+
+After implementation, verify the following.
+
+### Localization
+
+- Chinese and English switch correctly.
+- The brand displays exactly as specified.
+- All navigation and major content areas translate.
+- Language preference persists after reload.
+- Switching language does not jump to the page top.
+- Text does not overflow in either language.
+
+### Motion
+
+- Existing mouse-tracking works.
+- Digital human has subtle idle movement.
+- Galaxy responds to cursor movement.
+- Scroll transitions remain smooth.
+- Buttons respond to hover and click.
+- Motion remains coordinated but not excessive.
+- Reduced-motion mode works.
+
+### Layout
+
+- No abrupt background seams.
+- No unexpected blank section gaps.
+- No horizontal overflow.
+- No overlapping text that prevents reading.
+- No missing project or contact content.
+- Navigation stays usable.
+
+### Runtime
+
+- No uncaught runtime errors.
+- No broken imports.
+- No WebGL-related fatal errors.
+- No missing assets.
+- No memory leaks from duplicate animation loops.
+- No console warnings caused by invalid React usage.
+- No TypeScript or build errors.
+
+Use the project's existing test, lint, and build commands where available.
+
+If browser automation is available, inspect the site at desktop and mobile viewport sizes.
+
+Document any checks that could not be performed.
+
+---
+
+# 17. EXECUTION ORDER
+
+Implement in the following order:
+
+PHASE A — Foundation
+
+1. Inspect and preserve the working website.
+2. Create a safe checkpoint.
+3. Introduce design tokens.
+4. Implement full bilingual support.
+5. Replace placeholder branding.
+
+PHASE B — Cosmic Environment
+
+1. Build the galaxy background.
+2. Integrate its depth layers.
+3. Create smooth section atmosphere transitions.
+4. Remove abrupt background boundaries.
+5. Introduce controlled pointer interaction.
+
+PHASE C — Living Interactions
+
+1. Improve the digital human's idle motion.
+2. Connect human motion with galaxy interaction.
+3. Introduce the shared motion controller.
+4. Enhance buttons and typography.
+5. Add scroll-linked visual storytelling.
+
+PHASE D — Optimization
+
+1. Tune responsive layouts.
+2. Reduce unnecessary rendering work.
+3. Implement motion accessibility.
+4. Validate content and interactions.
+5. Run production build.
+6. Visually inspect the result.
+
+Complete all phases in this iteration where the existing architecture permits.
+
+Do not stop after creating a plan or mockup.
+
+---
+
+# 18. SAFETY AND ROLLBACK
+
+Do not delete unrelated files.
+
+Do not rewrite the entire project unless a compelling technical reason exists.
+
+Do not expose or hardcode API keys.
+
+Do not introduce unnecessary analytics or tracking.
+
+Do not use copyrighted third-party artwork without suitable rights.
+
+Do not force dependency upgrades unrelated to the requested features.
+
+Before any major rendering-system change, preserve a working version or create a separate development branch if Git is available.
+
+If the new scene introduces severe regressions, retain the working website and provide a CSS/canvas-based visual fallback.
+
+Explain how to revert the changes safely.
+
+---
+
+# 19. DEFINITION OF DONE
+
+The result must demonstrate:
+
+1. 魚橙子 / YU CHENGZI branding.
+2. A working Chinese/English language switcher.
+3. A prominent purple cosmic identity.
+4. Convincing animated galaxy depth.
+5. Interactive particles.
+6. Subtle breathing animation for the existing digital human.
+7. Coordinated digital-human, galaxy, and pointer interaction.
+8. Dynamic but readable editorial typography.
+9. Buttons with floating and spring-click feedback.
+10. Visually continuous section transitions.
+11. Fully functional scrolling and navigation.
+12. Responsive layouts and graceful performance fallbacks.
+13. Working core content even without WebGL.
+14. Successful build and available verification checks.
+
+## FINAL RESPONSE FORMAT
+
+After implementation, provide:
+
+1. Implemented features.
+2. Modified files.
+3. New dependencies and why they were needed.
+4. Architectural decisions.
+5. Tests performed and results.
+6. Remaining limitations.
+7. How to customize text, colors, particles, and animation intensity.
+8. Safe rollback instructions.
+
+## FINAL CREATIVE PRINCIPLE
+
+The website should not feel like a static portfolio with animation decorations.
+
+It should feel like entering YU CHENGZI's own digital universe.
+
+Every movement should appear intentional.
+
+Every interaction should reinforce spatial depth.
+
+Every section should belong to the same atmosphere.
+
+Prioritize cohesion, visual quality, usability, and engineering discipline over the sheer number of effects.
+
+**Proceed with implementation in the existing workspace.**

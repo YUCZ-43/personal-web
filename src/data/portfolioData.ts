@@ -1,3 +1,5 @@
+import { BRAND_IDENTITY, TRANSLATIONS, type SupportedLanguage } from './translations';
+
 export interface ProjectEntry {
   id: string;
   number: string;
@@ -20,25 +22,22 @@ export interface ExpertiseEntry {
 }
 
 export const PERSONAL_CONFIG = {
-  /** Replace with your preferred name or studio handle */
-  wordmark: '[YOUR NAME]',
-  roleEyebrow: 'AI PRODUCT BUILDER / CREATIVE TECHNOLOGIST',
-  heroHeadline: "Designing intelligent products. Building what's next.",
-  heroSupportingText:
-    'I explore the intersection of artificial intelligence, product design, automation, and software engineering — turning complex ideas into usable digital experiences.',
-  /** Configurable contact email used by the honest email fallback in the Contact section & Footer */
-  email: 'hello@example.com',
-  /** Configurable GitHub profile URL */
-  githubUrl: 'https://github.com',
-  /** Optional custom webhook/API endpoint if you later connect a backend */
+  wordmarkZh: BRAND_IDENTITY.zh,
+  wordmarkEn: BRAND_IDENTITY.en,
+  wordmark: `${BRAND_IDENTITY.zh} ${BRAND_IDENTITY.en}`,
+  roleEyebrow: TRANSLATIONS['zh-CN'].hero.eyebrow,
+  heroHeadline: `${TRANSLATIONS['zh-CN'].hero.headlineLine1}${TRANSLATIONS['zh-CN'].hero.headlineHighlight}`,
+  heroSupportingText: TRANSLATIONS['zh-CN'].hero.supportingText,
+  email: BRAND_IDENTITY.email,
+  githubUrl: BRAND_IDENTITY.githubUrl,
   contactEndpoint: '',
 };
 
 export const NAV_ITEMS = [
-  { label: 'Work', href: '#work', sectionId: 'work' },
-  { label: 'Expertise', href: '#expertise', sectionId: 'expertise' },
-  { label: 'About', href: '#about', sectionId: 'about' },
-  { label: 'Contact', href: '#contact', sectionId: 'contact' },
+  { key: 'work', label: 'Work', href: '#work', sectionId: 'work' },
+  { key: 'expertise', label: 'Expertise', href: '#expertise', sectionId: 'expertise' },
+  { key: 'about', label: 'About', href: '#about', sectionId: 'about' },
+  { key: 'contact', label: 'Contact', href: '#contact', sectionId: 'contact' },
 ] as const;
 
 export const PROJECTS: ProjectEntry[] = [
@@ -98,7 +97,8 @@ export const EXPERTISE_ITEMS: ExpertiseEntry[] = [
       'Rapid interactive prototyping to validate complex technical assumptions',
       'Transparent feedback states, confidence cues, and controllable UI',
     ],
-    deliverables: 'Interactive Prototypes · Interface Systems · Product Architecture',
+    deliverables:
+      'Interactive Prototypes · Interface Systems · Product Architecture',
   },
   {
     id: 'ai-agents-automation',
@@ -141,26 +141,38 @@ export const EXPERTISE_ITEMS: ExpertiseEntry[] = [
   },
 ];
 
-export const ABOUT_CONTENT = {
-  headline: 'Curiosity drives the work. Engineering brings it to life.',
-  paragraphs: [
-    "I'm interested in the space where technology, systems thinking, design, and practical problem-solving intersect.",
-    'My work focuses on understanding complex problems, experimenting with emerging tools, and building products that make technology more useful and accessible.',
-  ],
-  exploringTitle: 'Currently Exploring',
-  exploringTopics: [
-    'AI-native product experiences',
-    'Autonomous agents and workflows',
-    'Developer productivity',
-    'Human-computer interaction',
-    'Knowledge systems',
-    'Practical deployment automation',
-  ],
-};
-
 export const CONTACT_SERVICE_OPTIONS = [
   'AI Product',
   'Automation',
   'Web Experience',
   'Consulting',
 ] as const;
+
+export function getLocalizedProjects(lang: SupportedLanguage): ProjectEntry[] {
+  const dict = TRANSLATIONS[lang].work.projects;
+  return PROJECTS.map((proj) => {
+    const loc = dict[proj.id];
+    if (!loc) return proj;
+    return {
+      ...proj,
+      category: loc.category,
+      description: loc.description,
+      highlights: loc.highlights,
+    };
+  });
+}
+
+export function getLocalizedExpertise(lang: SupportedLanguage): ExpertiseEntry[] {
+  const dict = TRANSLATIONS[lang].expertise.items;
+  return EXPERTISE_ITEMS.map((item) => {
+    const loc = dict[item.id];
+    if (!loc) return item;
+    return {
+      ...item,
+      title: loc.title,
+      summary: loc.summary,
+      focusAreas: loc.focusAreas,
+      deliverables: loc.deliverables,
+    };
+  });
+}

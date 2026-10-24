@@ -1,6 +1,6 @@
 {
   "name": "Mainframe Hero",
-  "description": "Modern, interactive hero section with mouse-scrubbed background video, typewriter typography, and interactive service inquiry pills.",
+  "description": "魚橙子 (YU CHENGZI) — Cosmic interactive bilingual personal portfolio featuring a breathing 3D digital human, real-time Three.js Andromeda galaxy, and experimental editorial design.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

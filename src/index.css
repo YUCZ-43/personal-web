@@ -1,14 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Symbols+2&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', 'Noto Sans Symbols 2', 'Apple Symbols', 'Segoe UI Symbol', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Space Grotesk', 'Noto Serif SC', 'Noto Sans SC', sans-serif;
+  --font-serif-accent: 'Cormorant Garamond', 'Noto Serif SC', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Noto Sans SC', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+:root {
+  --cosmic-bg-primary: #0B071C;
+  --cosmic-bg-secondary: #21103F;
+  --cosmic-accent-violet: #854DFF;
+  --cosmic-accent-lavender: #BC9AFF;
+  --cosmic-accent-gold: #E8C879;
+  --cosmic-accent-cyan: #6AD9FF;
+  --cosmic-text-primary: #F4F0FF;
+  --cosmic-text-muted: #ACA1C7;
 }
 
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5.5rem;
+  background-color: #0B071C;
+  color: #F4F0FF;
+}
+
+body {
+  background-color: #0B071C;
+  color: #F4F0FF;
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -32,4 +52,61 @@ html {
 
 .animate-blink {
   animation: blink 1s step-end infinite;
+}
+
+@keyframes spectralShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.text-cosmic-gradient {
+  background: linear-gradient(
+    115deg,
+    #F4F0FF 0%,
+    #BC9AFF 35%,
+    #E8C879 68%,
+    #6AD9FF 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: spectralShift 9s ease-in-out infinite;
+}
+
+/* Feathered vignette mask for the 3D digital human video so there is zero hard edge */
+.digital-human-mask {
+  -webkit-mask-image: radial-gradient(
+    ellipse 82% 80% at 62% 48%,
+    rgba(0, 0, 0, 1) 42%,
+    rgba(0, 0, 0, 0.85) 64%,
+    rgba(0, 0, 0, 0) 96%
+  );
+  mask-image: radial-gradient(
+    ellipse 82% 80% at 62% 48%,
+    rgba(0, 0, 0, 1) 42%,
+    rgba(0, 0, 0, 0.85) 64%,
+    rgba(0, 0, 0, 0) 96%
+  );
+}
+
+@media (max-width: 1023px) {
+  .digital-human-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 85% 82% at 50% 50%,
+      rgba(0, 0, 0, 1) 45%,
+      rgba(0, 0, 0, 0.78) 70%,
+      rgba(0, 0, 0, 0) 98%
+    );
+    mask-image: radial-gradient(
+      ellipse 85% 82% at 50% 50%,
+      rgba(0, 0, 0, 1) 45%,
+      rgba(0, 0, 0, 0.78) 70%,
+      rgba(0, 0, 0, 0) 98%
+    );
+  }
 }

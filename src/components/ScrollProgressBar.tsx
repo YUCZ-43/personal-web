@@ -1,8 +1,9 @@
-import { motion, useScroll, useSpring, useReducedMotion } from 'motion/react';
+import { motion, useScroll, useSpring } from 'motion/react';
+import { useGlobalMotion } from '../context/GlobalMotionContext';
 
 export function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
-  const prefersReducedMotion = useReducedMotion();
+  const { reducedMotion } = useGlobalMotion();
 
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 120,
@@ -15,9 +16,9 @@ export function ScrollProgressBar() {
       role="progressbar"
       aria-label="Page scroll progress"
       style={{
-        scaleX: prefersReducedMotion ? scrollYProgress : smoothProgress,
+        scaleX: reducedMotion ? scrollYProgress : smoothProgress,
       }}
-      className="fixed top-0 inset-x-0 h-[2px] bg-[#2D46B9] origin-left z-50 pointer-events-none"
+      className="fixed top-0 inset-x-0 h-[2px] bg-gradient-to-r from-[#854DFF] via-[#BC9AFF] to-[#E8C879] origin-left z-50 pointer-events-none shadow-[0_0_12px_rgba(133,77,255,0.8)]"
     />
   );
 }
